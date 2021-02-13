@@ -1,9 +1,25 @@
 body{
     background-color: #e0f2f1;
 }
-.navbar{
-    background-color: #00bfa5; 
-    color:white;
+
+.navbar {
+  background-color: #008b78; 
+  color:white;
+}
+
+.navbar a {
+  color: white;
+}
+
+.sub-nav, .sub-nav a {
+  font-size: 3vh;
+  color: black;
+  background-color: #e0f2f1;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 h1 {
@@ -23,11 +39,11 @@ h1 {
 
 a {
   text-decoration: None;
-  color: white;
+  color: #f8a347;
 }
 
 .flex-column {
-  background-color: #00bfa5; 
+  background-color: #008b78; 
   justify-content: unset;
 }
 .flex-column * {

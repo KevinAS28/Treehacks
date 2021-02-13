@@ -1,0 +1,30 @@
+{% extends 'patient/both_navbar.html' %}
+{% block records_body %}
+
+<div class="d-flex align-items-left">
+  <div class="d-inline-block">
+    <img src="{{profile_photo}}" alt="Photo of your face, as submitted on registration." style="width: 30vh;"/>
+  </div>
+  <div class="d-inline-block">
+    <h3>{{patient_name}} - {{id}}</h3>
+    <div class="container">
+      {% block profile_head %}
+      {% endblock profile_head %}
+    </div>
+  </div>
+</div>
+
+<div>
+  <nav class="navbar justify-content-center sub-nav nav-fill nav-pills">
+  {% for sub in subtitles %}
+    <a class="nav-link {% if sub.active %}active{% endif %}" href="{{url_name}}/{{sub.page_section}}" {% if sub.active %} style="background-color: #f8a347" {% endif %}>{{ sub.title }}</a>
+  {% endfor %}
+  </nav>
+  {% for sub in subtitles %}
+    {% if sub.active %}
+    <p>{{sub.content}}</p>
+    {% endif %}
+  {% endfor %}
+</div>
+
+{% endblock records_body %}

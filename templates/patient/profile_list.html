@@ -1,0 +1,17 @@
+{% extends 'patient/profile.html' %}
+{% block profile_head %}
+
+      <div class="row">
+        <div class="col">
+          {% for row in main_display %}
+          <p style="margin-bottom: 0;">{{row.title}}:</p>
+          {% endfor %}
+        </div>
+        <div class="col">
+          {% for row in main_display %}
+          <p style="margin-bottom: 0;">{{row.value}}</p>
+          {% endfor %}
+        </div>
+      </div>
+
+{% endblock profile_head %}
