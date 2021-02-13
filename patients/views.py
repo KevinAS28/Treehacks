@@ -2,7 +2,7 @@ from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth.models import User, auth
 from django.contrib import messages
 from .models import PatientProfile, Document, TreatmentsandMedicines, Allergies, Lifestyle, HealthConditions
-
+from django.contrib.auth.decorators import login_required, user_passes_test
 # ----------------------------------------------------------------------------------------------------#
 # Patients Account access
 def startup(request):
@@ -41,58 +41,6 @@ def signup(request):
   else:
     return render(request,'account/patient_signup.html')
 
-def signup2(request):
-    # signup process
-    if request.method=='POST':
-        # checks if request method is POST
-        username = request.POST.get('username','')
-        mail = request.POST.get('email','')
-        fname = request.POST.get('fname','')
-        lname = request.POST.get('lname','')
-        password = request.POST.get('password','')
-        conf_pass = request.POST.get('confpassword','')
-        addressline1 = request.POST.get('addressline1','')
-        addressline2 = request.POST.get('addressline2','')
-        country = request.POST.get('country','')
-        city = request.POST.get('city','')
-        date_of_birth = request.POST.get('dob','')
-        # to check if person already exists
-        # sameUser=User.objects.filter(fname = fname, lname = lname)
-        # for user in sameUser:
-        #     if PatientProfile.objects.filter(user = user, country = country, city = city):
-        #         messages.error(request,"Person already exists")
-        #         return redirect('/')
-
-        # to check if password and conf password match
-        if password==conf_pass:
-            user_obj = User.objects.create_user(username = username, first_name = fname, last_name = lname, password = password, email = mail)
-            user_obj.save()
-            patient_obj = PatientProfile(user = user_obj,  city = city, date_of_birth=date_of_birth, country = country, addressline1 = addressline1, addressline2 = addressline2)
-            patient_obj.save()
-    return redirect('/')
-
-# def user_login(request):
-#     # loginprocess
-#     if request.method=="POST":
-#         username = request.POST.get('username','')
-#         user_password = request.POST.get('password','')
-
-#         #authentication
-#         user = auth.authenticate(username= username, password = user_password)
-#         if user is not None:
-#             auth.login(request,user)
-#             messages.success(request,"Logged In")
-#             return redirect('/feed')
-#         else:
-#             messages.error(request,"Invalid credentials")
-#             return redirect('/')
-
-def user_logout(request):
-    # logout process
-    auth.logout(request)
-    messages.success(request,"logged out")
-    return redirect('/')
-
 def documents(request):
     patient_id = request.POST.get('patient_id')
     patient = PatientProfile.objects.get(id = patient_id)
@@ -101,7 +49,7 @@ def documents(request):
 
 # our services
 def services(request):
-    # startup page of the application
+    # about us page of the application
     return render(request,'patient/our_services.html')
 
 # ----------------------------------------------------------------------------------------------------#
@@ -148,11 +96,13 @@ def LifestyleToString(patient_id):
     return "Unknown"
   return "<br/>".join(output)
 
+@login_required
 def getPatient(request):
   user = request.user
   patient = PatientProfile.objects.get(user=user)
   return patient
 
+@login_required
 def healthRecord(request, page_section=0):
   patient = getPatient(request)
   patient_id = patient.id
@@ -199,6 +149,7 @@ def healthRecord(request, page_section=0):
     }
   )
 
+@login_required
 def emergency(request, page_section=0):
   patient_id = "unique-identifier"
   patient_name = "Jane S. Doe"
@@ -218,6 +169,7 @@ def emergency(request, page_section=0):
   )
 
 #patient files example
+@login_required
 def files(request):
   records = [
     {
@@ -230,11 +182,14 @@ def files(request):
   ]
   return render(request,'patient/files.html', {"title": "Example", "records": records})
 
+@login_required
 def prescriptions(request):
     return render(request,'patient/files.html')
 
+@login_required
 def tests(request):
     return render(request,'patient/files.html')
 
+@login_required
 def otherFiles(request):
     return render(request,'patient/files.html')
