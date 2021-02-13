@@ -1,0 +1,41 @@
+<head>
+  <title>Login</title>
+</head>
+{% extends 'base.html' %}
+{% block css %}
+  .wrap-login{
+      width: 80%;
+      position: relative;
+      left: 10%;
+      top: 100px;
+  }
+{% endblock %}
+{% block header %}{% endblock %}
+{% block body %}
+<!-- Default form login -->
+<div class="wrap-login">
+<form class="text-center border border-light mx-4 p-5 w-75 h-50 mx-auto my-10" method="post" action="{% url 'login' %}">
+
+  <p class="h4 mb-4">Sign in</p>
+
+  {% csrf_token %}
+  <!-- Email -->
+  <input type="username" id="id_username" name = "username" class="form-control mb-4" placeholder="Username">
+
+  <!-- Password -->
+  <input type="password" id="id_password" class="form-control mb-4" name='password' placeholder="Password">
+
+  <!-- Sign in button -->
+  <button class="btn btn-primary my-4" type="submit">Enter</button>
+
+  {% if form.errors %}
+      <p class=" label label-danger text-warning">
+          Your username and password didn't match.
+          Please try again.
+      </p>
+  {% endif %}
+  <a href="{% url 'patient_signup' %}">Sign up here</a>
+
+</form>
+</div>
+{% endblock %}

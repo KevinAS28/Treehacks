@@ -14,6 +14,12 @@ class PatientProfile(models.Model):
     country = models.CharField(max_length=200)
     city = models.CharField(max_length=200)
     zipcode = models.IntegerField(default="0")
+
+    sex = models.CharField(max_length=20)
+    pronouns = models.CharField(max_length=100)
+    race = models.CharField(max_length=200)
+    number = models.CharField(max_length=20)
+
     # facial recognition field
     def __str__(self):
         return str(self.label)+" "+str(self.user)
@@ -46,4 +52,4 @@ class TreatmentsandMedicines(models.Model):
 class Lifestyle(models.Model):
     patient=models.ForeignKey(PatientProfile,on_delete=models.CASCADE)
     activity = models.CharField(max_length=200) 
-    hours = models.IntegerField
+    amount = models.CharField(max_length=200) 

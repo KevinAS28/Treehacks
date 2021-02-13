@@ -1,7 +1,28 @@
 {% extends 'base.html' %}
 {% block body %}
-    <div class = 'startup'>
-        <button> <a href="/doctors" >Doctor</a> </button>
-        <button> <a href="/patients" >Patient</a> </button>
+    <div class="jumbotron jumbotron-fluid" style="background-image:url('/static/img/splash-bg.png'); background-size: 100%; padding: 10vh; height: 100vh">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-4">
+            <img src="/static/img/cadeceus.png" style="width:100%" alt="Medical cadeceus.">
+          </div>
+          <div class="col-sm-8 text-left">
+            <h1>Modern + Connected</h1>
+            <h1>Healthcare</h1>
+
+            <a href="#">
+              <div class="highlight">
+                <h2>Access your medical history</h2>
+              </div>
+            </a>
+
+            <a href="#">
+              <div class="highlight">
+                <h2>Connect to your patients</h2>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
 {% endblock body %}
