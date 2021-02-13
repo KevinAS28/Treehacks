@@ -59,3 +59,9 @@ def user_logout(request):
     auth.logout(request)
     messages.success(request,"logged out")
     return redirect('/')
+
+
+# testing ui elements
+def records(request):
+    # startup page of the application
+    return render(request,'patient/records_base.html')
