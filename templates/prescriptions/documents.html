@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    {% for rec in record  %}
+        <p>{{ rec.patient }} </p>
+        <p>{{ rec.issued_by }} </p>
+        <p>{{ rec.patient }} </p>
+    {% endfor %}
+{% endblock body %}

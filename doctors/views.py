@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from patients.models import PatientProfile, Document
+from patients.models import PatientProfile, Document, TreatmentsandMedicines, Allergies, Lifestyle, HealthConditions
 from django.contrib.auth.models import User, auth
 from .models import DoctorProfile
 from django import forms
@@ -17,12 +17,12 @@ def signup(request):
     # signup process
     if request.method=='POST':
         # checks if request method is POST
-        username = request.POST.get('username','')
-        mail = request.POST.get('email','')
-        medical_license_number = request.POST.get('medical_license_number','')
         form = ProfileForm(request.FILES)
         if form.is_valid():
             proof = form.cleaned_data['doc']
+            username = request.POST.get('username','')
+            mail = request.POST.get('email','')
+            medical_license_number = request.POST.get('medical_license_number','')
             fname = request.POST.get('fname','')
             lname = request.POST.get('lname','')
             password = request.POST.get('password','')
@@ -45,17 +45,39 @@ def signup(request):
                 doctor_obj.save()
     return redirect('/')
 
+class DocForm(forms.Form):
+    doc = forms.FileField()
 
 def prescribe(request):
     return render(request,'account/doctor_prescribe.html')
 
 def give_prescriptions(request):
-    pdfFileObj = request.FILES['file'].read()
-    doctor_id = request.POST.get('did','')
-    doctor = DoctorProfile.objects.get(id = doctor_id)
-    # doctor = request.user
-    patient_id = request.POST.get('pid','')
-    patient = PatientProfile.objects.get(id = patient_id)
-    post_obj = Document(patient= patient, doctor= doctor, pdf = pdfFileObj)
-    post_obj.save()
-    return redirect('/')
+    form = ProfileForm(request.FILES)
+    if form.is_valid():
+        pdfFileObj = form.cleaned_data['doc']
+        doctor_id = request.POST.get('did','')
+        doctor = DoctorProfile.objects.get(id = doctor_id)
+        # doctor = request.user
+        patient_id = request.POST.get('pid','')
+        patient = PatientProfile.objects.get(id = patient_id)
+        post_obj = Document(patient= patient, doctor= doctor, pdf = pdfFileObj)
+        post_obj.save()
+        return redirect('/')
+
+def view_records(request):
+    option = request.POST.get('option')
+    patient_id = request.POST.get('patient_id')
+    patient = PatientProfile.object.get(id = patient_id)
+    if option==1:
+        treatments_medicines = TreatmentsandMedicines.objects.filter(patient = patient)
+        return render(request, "prescriptions/patient_personal_record.html", {patient, treatments_medicines})
+    if option==2:
+        health_conditions = HealthConditions.objects.filter(patient = patient)
+        return render(request, "prescriptions/patient_personal_record.html", {patient, health_conditions})
+    if option==3:
+        allergies = Allergies.objects.filter(patient = patient)
+        return render(request, "prescriptions/patient_personal_record.html", {patient, allergies})
+    if option==4:
+        lifestyle = Lifestyle.objects.filter(patient = patient)
+        return render(request, "prescriptions/patient_personal_record.html", {patient, lifestyle})
+    return render(request, "prescriptions/patient_personal_record.html", {patient})
