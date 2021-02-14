@@ -7,9 +7,9 @@ app_name = "patients_app"
 urlpatterns = [
 
     path('', views.startup, name="patient_startup"),
-    path('signup',views.signup,name="patient_signup"),
+    path('signup/',views.signup,name="patient_signup"),
 
-    path('aboutus',views.services,name="about_us"),
+    path('aboutus/',views.services,name="about_us"),
 
     path('health/info', views.healthRecord, name="patient_health"),
     path('health/info/<int:page_section>', views.healthRecord, name="patient_health"),
