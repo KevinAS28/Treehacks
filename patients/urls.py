@@ -7,7 +7,8 @@ app_name = "patients_app"
 urlpatterns = [
 
     path('', views.startup, name="patient_startup"),
-    path('signup/',views.signup,name="patient_signup"),
+    path('signup/',views.signup,name="signup"),
+    path('login/',views.signup,name="patient_login"),
 
     path('aboutus/',views.services,name="about_us"),
 
@@ -24,4 +25,12 @@ urlpatterns = [
     path('shared/prescriptions', views.prescriptions, name="shared_prescriptions"),
     path('shared/tests', views.tests, name="shared_tests"),
     path('shared/other', views.otherFiles, name="shared_other"),
+
+
+    path('add_face', views.add_face, name='add_face'),
+    path('add_face_src', views.add_face_src, name='add_face_src'),
+    path('auth_face', views.auth_face, name='auth_face'),
+    path('auth_face_src', views.auth_face_src, name='auth_face_src'),
+
+
 ]

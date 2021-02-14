@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block body %}
+    {% for qna in objs %}
+    <div class="container my-4 post-box" id="{{qna.question.id}}">
+        <div class="card">
+        {% comment %} href="{% url 'question' qna.question.id%}"" {% endcomment %}
+            <h5 class="card-header"><a href="{% url 'question' qna.question.id %}" style="color:black;"> {{qna.question.text}} </a><small>{{qna.question.date}}</small></h5>
+            <a href="{% url 'question' qna.question.id %}"> {{ qna.answers.len }} Replies </a>
+        </div>
+    </div>
+    {% endfor %}
+{% endblock body %}
