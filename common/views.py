@@ -16,3 +16,6 @@ def redirectUser(request):
     return redirect('startup')
 
   return redirect('login')
+
+def contact_us(request):
+  return render(request, "common/contact_us.html")

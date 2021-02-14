@@ -30,7 +30,7 @@ urlpatterns = [
 
     path('doctors/',include('doctors.urls'),name='doctor_userpage'),   
     path('patients/',include('patients.urls'),name='patient_userpage'),  
-
+    path('contact_us',views.contact_us,name="contact_us")
 ]
 
 urlpatterns += staticfiles_urlpatterns()
