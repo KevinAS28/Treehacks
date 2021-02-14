@@ -69,8 +69,25 @@ def services(request):
     # about us page of the application
     return render(request,'patient/our_services.html')
 
+def patient_login(request):
+  return render(request,'account/patient_login.html')
 
-  
+def login(request):
+    # loginprocess
+    if request.method=="POST":
+        username = request.POST.get('username','')
+        user_password = request.POST.get('password','')
+
+        #authentication
+        user = auth.authenticate(username= username, password = user_password)
+        if user is not None:
+            auth.login(request,user)
+            messages.success(request,"Logged In")
+            return redirect('/feed')
+        else:
+            messages.error(request,"Invalid credentials")
+            return redirect('/')
+
 
 # ----------------------------------------------------------------------------------------------------#
 # Patients Health Records
