@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Question, Answer
+from django.urls import reverse
+
 def startup(request):
   return render(request, "common/startup.html")
 
@@ -7,15 +9,15 @@ def redirectUser(request):
   user = request.user
 
   if user.groups.filter(name="Patient"):
-    return redirect('patient_health')
+    return redirect(reverse('patient:patient_health'))
 
   if user.groups.filter(name="Doctor"):
-    return redirect('startup')
+    return redirect(reverse('startup'))
 
   if user.groups.filter(name="Administrator"):
-    return redirect('startup')
+    return redirect(reverse('startup'))
 
-  return redirect('login')
+  return redirect(reverse('login'))
 
 def contact_us(request):
   return render(request, "common/contact_us.html")

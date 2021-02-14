@@ -28,8 +28,9 @@ urlpatterns = [
 
     path('',views.startup,name="startup"),
 
-    path('doctors/',include('doctors.urls'),name='doctor_userpage'),   
-    path('patients/',include('patients.urls'),name='patient_userpage'),  
+    path('doctors/',include('doctors.urls', namespace='doctor'),name='doctor'),   
+    path('patients/',include('patients.urls', namespace='patient'),name='patient'),  
+    
     path('contact_us',views.contact_us,name="contact_us"),
     path('forum',views.forum,name="forum"),
     path('forum/question/<int:questionId>',views.question,name="question")

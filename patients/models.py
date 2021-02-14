@@ -2,17 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User, auth
 from doctors.models import DoctorProfile
 
-
 class PatientProfile(models.Model):  
     # Patient profile
-
-    # username = models.CharField(max_length=50, blank=False, default="patient")
-    # label = models.CharField(max_length=200, blank=False, default="patients")  # patient, doctor or hospital
-    # country = models.CharField(max_length=200)
-    # city = models.CharField(max_length=200)
-    # date_of_birth = models.DateField()
-    # profilePicture = models.ImageField(upload_to="profilePics")
-
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     date_of_birth = models.DateField()
@@ -26,15 +17,12 @@ class PatientProfile(models.Model):
     sex = models.CharField(max_length=20)
     pronouns = models.CharField(max_length=100)
     race = models.CharField(max_length=200)
-    number = models.CharField(max_length=20)
+    phone_number = models.CharField(max_length=20)
 
 
-    # facial recognition field
-    
+    # facial recognition field    
     def __str__(self):
-        return str(self.label)+" "#+str(self.user)
-
-
+        return str(self.user)
 
 class Document(models.Model): #stores individual documents
     patient = models.ForeignKey(PatientProfile,on_delete=models.CASCADE)

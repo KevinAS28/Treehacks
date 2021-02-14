@@ -24,64 +24,50 @@ import camera_auth, camera_add
 # ----------------------------------------------------------------------------------------------------#
 
 
-#Face recognition module. It will take around 30 seconds to run. 
-print("\n\nLoading face recognition modules...")
-FRGraph = FaceRecGraph()
-aligner = AlignCustom()
-extract_feature = FaceFeature(FRGraph)
-face_detect = MTCNNDetect(FRGraph, scale_factor=2)
-print("Done\n\n")
+# #Face recognition module. It will take around 30 seconds to run. 
+# print("\n\nLoading face recognition modules...")
+# FRGraph = FaceRecGraph()
+# aligner = AlignCustom()
+# extract_feature = FaceFeature(FRGraph)
+# face_detect = MTCNNDetect(FRGraph, scale_factor=2)
+# print("Done\n\n")
 
 
-def gen(camera):
-    while True:
-        frame = camera.get_frame()
-        if frame==None:
-            break
+# def gen(camera):
+#     while True:
+#         frame = camera.get_frame()
+#         if frame==None:
+#             break
 
-        vid =  (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+#         vid =  (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
-        yield vid
+#         yield vid
 
-    print("Done")
-
-
-def add_face_src(request):
-    frames = gen(camera_add.VideoCamera(FRGraph, aligner, extract_feature, face_detect))
-    return StreamingHttpResponse(frames, content_type='multipart/x-mixed-replace; boundary=frame')
+#     print("Done")
 
 
-def add_face(request):
-    # frames = gen(camera_add.VideoCamera(FRGraph, aligner, extract_feature, face_detect))
-    # return StreamingHttpResponse(frames, content_type='multipart/x-mixed-replace; boundary=frame')
-    return render(request, 'vid_base_add.html')
-
-def auth_face_src(request):
-    frames = gen(camera_auth.VideoCamera(FRGraph, aligner, extract_feature, face_detect))
-    return StreamingHttpResponse(camera_auth.gen(frames, content_type='multipart/x-mixed-replace; boundary=frame'))
-
-def auth_face(request):
-    return render(request, 'vid_base_auth.html')
+# def add_face_src(request):
+#     frames = gen(camera_add.VideoCamera(FRGraph, aligner, extract_feature, face_detect))
+#     return StreamingHttpResponse(frames, content_type='multipart/x-mixed-replace; boundary=frame')
 
 
+# def add_face(request):
+#     # frames = gen(camera_add.VideoCamera(FRGraph, aligner, extract_feature, face_detect))
+#     # return StreamingHttpResponse(frames, content_type='multipart/x-mixed-replace; boundary=frame')
+#     return render(request, 'vid_base_add.html')
 
+# def auth_face_src(request):
+#     frames = gen(camera_auth.VideoCamera(FRGraph, aligner, extract_feature, face_detect))
+#     return StreamingHttpResponse(camera_auth.gen(frames, content_type='multipart/x-mixed-replace; boundary=frame'))
 
-
-
-
+# def auth_face(request):
+#     return render(request, 'vid_base_auth.html')
 
 #### all the account processes
 # ----------------------------------------------------------------------------------------------------#
 # Patients Account access
 
-def startup(request):
-    # startup page of the application
-    return render(request,'account/patient_signup.html')
-
-
-@csrf_exempt
 def signup(request):
-
   form = SignUpForm()
   form1 = UserCreationForm()
   form2 = PatientCreation()
@@ -109,26 +95,6 @@ def signup(request):
     'account/signup.html',
     {'form': form, 'form1': form1, 'form2': form2}
   )
-
-def patient_login(request):	
-  return render(request,'account/patient_login.html')	
-
-def login(request):	
-    # loginprocess	
-    if request.method=="POST":	
-        username = request.POST.get('username','')	
-        user_password = request.POST.get('password','')	
-
-        #authentication	
-        user = auth.authenticate(username= username, password = user_password)	
-        if user is not None:	
-            auth.login(request,user)	
-            messages.success(request,"Logged In")	
-            return redirect('/feed')	
-        else:	
-            messages.error(request,"Invalid credentials")	
-            return redirect('/')	
-
 
 def documents(request):
     patient_id = request.POST.get('patient_id')
@@ -196,6 +162,7 @@ def getPatient(request):
 def setEmergencyContacts(request):
     return render(request, 'patient/')
 '''
+
 @login_required
 def healthRecord(request, page_section=0):
   patient = getPatient(request)
@@ -209,7 +176,7 @@ def healthRecord(request, page_section=0):
     {'title': 'Sex', 'value': patient.sex},
     {'title': 'Pronouns', 'value': patient.pronouns},
     {'title': 'Race', 'value': patient.race},
-    {'title': 'Phone number', 'value': patient.number},
+    {'title': 'Phone number', 'value': patient.phone_number},
     {'title': 'Email', 'value': user.email},
     {'title': 'Address', 'value': "%s, %s, %s, %s, %s" % (patient.addressline1, patient.addressline2, patient.city, patient.country, patient.zipcode)},
   ]

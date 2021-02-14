@@ -5,14 +5,14 @@
     <div class="col-sm-2">
       <nav class="navbar flex-column navbar-light text-left" style="height: 100vh">
         <h2>Your health record</h2>
-        <a class="nav-link" aria-current="page" href="{% url 'patient_health' %}">&emsp;Personal information</a>
-        <a class="nav-link" aria-current="page" href="{% url 'patient_emergency' %}">&emsp;Emergency details</a>
-        <a class="nav-link" aria-current="page" href="{% url 'patient_files' %}">&emsp;Your Files</a>
+        <a class="nav-link" aria-current="page" href="{% url 'patient:patient_health' %}">&emsp;Personal information</a>
+        <a class="nav-link" aria-current="page" href="{% url 'patient:patient_emergency' %}">&emsp;Emergency details</a>
+        <a class="nav-link" aria-current="page" href="{% url 'patient:patient_files' %}">&emsp;Your Files</a>
         
         <h2>Shared by Doctor</h2>
-        <a class="nav-link" aria-current="page" href="{% url 'shared_prescriptions' %}">&emsp;Prescriptions</a>
-        <a class="nav-link" aria-current="page" href="{% url 'shared_tests' %}">&emsp;Tests, scans and x-ray results</a>
-        <a class="nav-link" aria-current="page" href="{% url 'shared_other' %}">&emsp;Other Files</a>
+        <a class="nav-link" aria-current="page" href="{% url 'patient:shared_prescriptions' %}">&emsp;Prescriptions</a>
+        <a class="nav-link" aria-current="page" href="{% url 'patient:shared_tests' %}">&emsp;Tests, scans and x-ray results</a>
+        <a class="nav-link" aria-current="page" href="{% url 'patient:shared_other' %}">&emsp;Other Files</a>
           
       </nav>
     </div>
