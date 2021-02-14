@@ -57,50 +57,49 @@ def services(request):
 # Patients Health Records
 
 # format records
-def TreatmentsandMedicinesToString(patient_id):
-  objs = Lifestyle.objects.filter(id=patient_id)
+def TreatmentsandMedicinesToString(patient):
+  objs = Lifestyle.objects.filter(patient=patient)
   output = []
   for obj in objs:
     output.append("%s: %s" % (obj.medicine, obj.description))
 
   if output == []:
     return "None"
-  return "<br/>".join(output)
+  return "\n".join(output)
 
-def HealthConditionsToString(patient_id):
-  objs = HealthConditions.objects.filter(id=patient_id)
+def HealthConditionsToString(patient):
+  objs = HealthConditions.objects.filter(patient=patient)
   output = []
   for obj in objs:
     output.append(obj.name)
 
   if output == []:
     return "None"
-  return "<br/>".join(output)
+  return "\n".join(output)
 
-def AllergiesToString(patient_id):
-  objs = Allergies.objects.filter(id=patient_id)
+def AllergiesToString(patient):
+  objs = Allergies.objects.filter(patient=patient)
   output = []
   for obj in objs:
     output.append(obj.name)
 
   if output == []:
     return "None"
-  return "<br/>".join(output)
+  return "\n".join(output)
 
-def LifestyleToString(patient_id):
-  objs = Lifestyle.objects.filter(id=patient_id)
+def LifestyleToString(patient):
+  objs = Lifestyle.objects.filter(patient=patient)
   output = []
   for obj in objs:
     output.append("%s: %s" % (obj.activity, obj.amount))
 
   if output == []:
     return "Unknown"
-  return "<br/>".join(output)
+  return "\n".join(output)
 
 @login_required
 def getPatient(request):
   user = request.user
-  print(user)
   patient = PatientProfile.objects.get(user=user)
   return patient
 
@@ -108,7 +107,6 @@ def getPatient(request):
 def healthRecord(request, page_section=0):
   patient = getPatient(request)
   patient_id = patient.id
-
   user = patient.user
 
   patient_name = "%s %s" % (user.first_name, user.last_name)
@@ -125,10 +123,10 @@ def healthRecord(request, page_section=0):
 
 
   subtitles = [
-    {'title': 'Treatments and medicines', 'content': HealthConditionsToString(patient_id), 'active': page_section==0, 'page_section':0},
-    {'title': 'Health conditions', 'content': HealthConditionsToString(patient_id), 'active': page_section==1, 'page_section':1},
-    {'title': 'Allergies', 'content': AllergiesToString(patient_id), 'active': page_section==2, 'page_section':2},
-    {'title': 'Lifestyle', 'content': LifestyleToString(patient_id), 'active': page_section==3, 'page_section':3}
+    {'title': 'Treatments and medicines', 'content': HealthConditionsToString(patient), 'active': page_section==0, 'page_section':0},
+    {'title': 'Health conditions', 'content': HealthConditionsToString(patient), 'active': page_section==1, 'page_section':1},
+    {'title': 'Allergies', 'content': AllergiesToString(patient), 'active': page_section==2, 'page_section':2},
+    {'title': 'Lifestyle', 'content': LifestyleToString(patient), 'active': page_section==3, 'page_section':3}
   ]
 
   try:
@@ -147,16 +145,52 @@ def healthRecord(request, page_section=0):
       'profile_photo': patient_photo,
       "main_display": main_display,
       'subtitles': subtitles,
-      "url_path": url_path
+      "url_path": url_path,
     }
   )
 
 @login_required
 def emergency(request, page_section=0):
-  patient_id = "unique-identifier"
-  patient_name = "Jane S. Doe"
+  patient = getPatient(request)
+  patient_id = patient.id
+  user = patient.user
+
+  patient_name = "%s %s" % (user.first_name, user.last_name)
   patient_photo = "/static/img/avatar.png"
-  content = "Don't let me die. Very broken bones. Handle with care. Do not ship internationally."
+  main_display = "Don't let me die. Very broken bones. Handle with care. Do not ship internationally."
+
+  subtitles = [
+    {'title': 'Emergency Contact', 'content': "list of contact", 'active': page_section==0, 'page_section':0},
+    {'title': 'Health condition details', 'content': HealthConditionsToString(patient), 'active': page_section==1, 'page_section':1},
+    {'title': 'Allergies', 'content': AllergiesToString(patient), 'active': page_section==2, 'page_section':2},
+  ]
+
+  flags = []
+  for obj in Allergies.objects.filter(patient=patient):
+    flags.append(obj.name)
+  for obj in HealthConditions.objects.filter(patient=patient):
+    flags.append(obj.name)
+
+  try:
+    int(request.path.split('/')[-1])
+    url_path = "/".join(request.path.split('/')[:-1])
+  except ValueError:
+    url_path = request.path
+
+  return render(
+    request, 
+    'patient/profile_string.html',
+    {
+      'title': "Emergency details",
+      "id": patient_id,
+      "patient_name": patient_name,
+      'profile_photo': patient_photo,
+      "main_display": main_display,
+      'subtitles': subtitles,
+      "url_path": url_path,
+      "flags": flags
+    }
+  )
 
   return render(
     request, 

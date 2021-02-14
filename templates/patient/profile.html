@@ -22,7 +22,7 @@
   </nav>
   {% for sub in subtitles %}
     {% if sub.active %}
-    <p>{{sub.content}}</p>
+    <p>{{sub.content|linebreaks}}</p>
     {% endif %}
   {% endfor %}
 </div>
