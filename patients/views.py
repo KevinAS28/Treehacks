@@ -1,4 +1,6 @@
-from django.shortcuts import render, HttpResponse, redirect
+import time
+
+from django.shortcuts import render, HttpResponse, redirect, reverse
 from django.contrib.auth.models import User, auth, Group
 from django.contrib import messages
 from django.http import StreamingHttpResponse
@@ -6,6 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
+from django.template import loader, Context
 
 
 from .models import PatientProfile
@@ -33,41 +36,38 @@ face_detect = MTCNNDetect(FRGraph, scale_factor=2)
 print("Done\n\n")
 
 
-def gen(camera):
-    while True:
+def gen(request, camera):
+    while not camera.done:
         frame = camera.get_frame()
         if frame==None:
             break
-
+        
         vid =  (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
-
         yield vid
 
-    print("Done")
 
+    # request.session['test'] = 'YAY'
+    # return redirect()
+
+def tester(request):
+    # return render(request, 'vid_base_add.html', {'test': request.session['email']})
+    def gen1():
+          t = loader.get_template('test.html')
+          for i in range(100):
+            time.sleep(1)
+            yield t.render({'test': '<h1>{}</h1>'.format(str(i))})
+            
+    return StreamingHttpResponse(gen1())
+    
 
 def add_face_src(request):
-    frames = gen(camera_add.VideoCamera(FRGraph, aligner, extract_feature, face_detect))
+    print("add_face_src: ", request.session["email"])
+    frames = gen(request, camera_add.VideoCamera(FRGraph, aligner, extract_feature, face_detect, name=request.session["email"]))
     return StreamingHttpResponse(frames, content_type='multipart/x-mixed-replace; boundary=frame')
 
 
 def add_face(request):
-    # frames = gen(camera_add.VideoCamera(FRGraph, aligner, extract_feature, face_detect))
-    # return StreamingHttpResponse(frames, content_type='multipart/x-mixed-replace; boundary=frame')
     return render(request, 'vid_base_add.html')
-
-def auth_face_src(request):
-    frames = gen(camera_auth.VideoCamera(FRGraph, aligner, extract_feature, face_detect))
-    return StreamingHttpResponse(camera_auth.gen(frames, content_type='multipart/x-mixed-replace; boundary=frame'))
-
-def auth_face(request):
-    return render(request, 'vid_base_auth.html')
-
-
-
-
-
-
 
 
 #### all the account processes
@@ -86,24 +86,28 @@ def signup(request):
   form1 = UserCreationForm()
   form2 = PatientCreation()
   if request.POST:
-    form = SignUpForm(request.POST)
-    form1 = UserCreationForm(request.POST)
-    form2 = PatientCreation(request.POST, request.FILES)
-    if form.is_valid() and form1.is_valid() and form2.is_valid():
-      user = form1.save(commit=False)
-      user.first_name = form.cleaned_data['first_name']
-      user.last_name = form.cleaned_data['last_name']
-      user.email = form.cleaned_data['email']
-      user.save()
+    # form = SignUpForm(request.POST)
+    # form1 = UserCreationForm(request.POST)
+    # form2 = PatientCreation(request.POST, request.FILES)
+    # if form.is_valid() and form1.is_valid() and form2.is_valid():
+    #   user = form1.save(commit=False)
+    #   user.first_name = form.cleaned_data['first_name']
+    #   user.last_name = form.cleaned_data['last_name']
+    #   user.email = form.cleaned_data['email']
+    #   user.save()
 
-      patient_group = Group.objects.get(name='Patient')
-      patient = form2.save(commit=False)
-      patient.user = user
-      patient.save()
-      patient_group.user_set.add(user)
-      loggedIn = authenticate(username=form1.cleaned_data['username'], password=form1.cleaned_data['password1'])
-      login(request, loggedIn)
-      return redirect('/')
+    #   patient_group = Group.objects.get(name='Patient')
+    #   patient = form2.save(commit=False)
+    #   patient.user = user
+    #   patient.save()
+    #   patient_group.user_set.add(user)
+    #   loggedIn = authenticate(username=form1.cleaned_data['username'], password=form1.cleaned_data['password1'])
+    #   login(request, loggedIn)
+      # return redirect('/')
+
+      request.session["email"] = "test@mail.com"#form.cleaned_data['email']
+      return render(request, 'vid_base_add.html', )
+
   return render(
     request,
     'account/signup.html',

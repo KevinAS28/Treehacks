@@ -5,6 +5,7 @@ from . import views
 app_name = "patients_app"
 
 urlpatterns = [
+    path('tester/', views.tester, name='test'),
 
     path('', views.startup, name="patient_startup"),
     path('signup/',views.signup,name="patient_signup"),
@@ -28,8 +29,8 @@ urlpatterns = [
 
     path('add_face', views.add_face, name='add_face'),
     path('add_face_src', views.add_face_src, name='add_face_src'),
-    path('auth_face', views.auth_face, name='auth_face'),
-    path('auth_face_src', views.auth_face_src, name='auth_face_src'),
+    # path('auth_face', views.auth_face, name='auth_face'),
+    # path('auth_face_src', views.auth_face_src, name='auth_face_src'),
 
 
 ]
