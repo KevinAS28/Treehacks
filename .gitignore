@@ -1,1 +1,11 @@
 Facial_simple/models/*
+
+db.sqlite3
+
+doctors/__pycache__
+
+patients/__pycache__
+
+common/__pycache__
+
+treehacks/__pycache__
