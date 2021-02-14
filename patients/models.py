@@ -29,6 +29,14 @@ class Document(models.Model): #stores individual documents
     issued_by = models.ForeignKey(DoctorProfile,on_delete=models.CASCADE)
     pdf = models.FileField(upload_to='prescription_pdfs')
 
+class DocumentSelfIssued(models.Model): #stores individual documents
+    patient = models.ForeignKey(PatientProfile,on_delete=models.CASCADE)
+    pdf = models.FileField(upload_to='self_uploaded_pdfs')
+    name = models.CharField(max_length=200)
+    description = models.CharField(max_length=200)
+    qr = models.CharField(max_length=200)
+    date_uploaded = models.DateField()
+
 # class Records(models.Model): #stores the records + documents of a patient
 #     patient=models.ForeignKey(PatientProfile,on_delete=models.CASCADE)
 #     # other details
@@ -53,3 +61,13 @@ class Lifestyle(models.Model):
     activity = models.CharField(max_length=200) 
     amount = models.CharField(max_length=200) 
 
+class EmergencyContact(models.Model):
+  patient=models.ForeignKey(PatientProfile,on_delete=models.CASCADE)
+  first_name =  models.CharField(max_length=200)
+  last_name =  models.CharField(max_length=200)
+  relation =  models.CharField(max_length=200)
+  phone_number = models.CharField(max_length=20)
+
+class EmergencyRecord(models.Model):
+  patient=models.ForeignKey(PatientProfile,on_delete=models.CASCADE)
+  message=models.CharField(max_length=255)

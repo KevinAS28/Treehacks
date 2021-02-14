@@ -9,6 +9,7 @@ from django import forms
 class ProfileForm(forms.Form):
    doc = forms.FileField()
 
+
 def signup(request):
     # signup process
     if request.method=='POST':

@@ -12,12 +12,13 @@ import json
 import numpy as np
 import pandas as pd
 from threading import Thread
+import os
 
 from django.template import Context, Template
 
 class VideoCamera(object):
 
-    def __init__(self, FRGraph, aligner, extract_features, face_detect, name="Your Name"):
+    def __init__(self, FRGraph, aligner, extract_features, face_detect, name="Your Name", done_img="done.png"):
         # Using OpenCV to capture from device 0. If you have trouble capturing
         # from a webcam, comment the line below out and use a video file
         # instead.
@@ -36,6 +37,8 @@ class VideoCamera(object):
 
         self.name = name
 
+        self.done_img = open(os.path.join("static", "img", done_img), "rb").read()
+        self.done = False
         # If you decide to use video.mp4, you must have this file in the folder
         # as the main.py.
         # self.video = cv2.VideoCapture('video.mp4')
@@ -50,7 +53,7 @@ class VideoCamera(object):
         f = open('./facerec_128D.txt', 'w+');
         f.write(json.dumps(data_set))
 
-        print('Saved')
+        print(f'Saved! {self.name}')
 
     def __del__(self):
         self.save()
@@ -58,19 +61,22 @@ class VideoCamera(object):
         self.video.release()
     
     def get_frame(self):
+        if self.done:
+            return None
+        if (self.face_right_detected>=20) and (self.face_left_detected>=20) and (self.face_center_detected>=20):
+            # print("Done")
+            self.done = True
+            return self.done_img
+
+            # ret, jpeg = cv2.imencode('.jpg', self.done_img)
+            # return jpeg.tobytes()
+
         success, image = self.video.read()
-        # We are using Motion JPEG, but OpenCV defaults to capture raw images,
-        # so we must encode it into JPEG in order to correctly display the
-        # video stream.
+        
         rects, landmarks = self.face_detect.detect_face(image, 80);  # min face size is set to 80x80
         for (i, rect) in enumerate(rects):
-            if (self.face_right_detected>=20) and (self.face_left_detected>=20) and (self.face_center_detected>=20):
-                # print("Done")
-                # break
-                return None
-                
-
             aligned_frame, pos = self.aligner.align(160,image,landmarks[i]);
+
             if pos=="Left":
                 self.face_left_detected += 1
             elif pos=="Right":

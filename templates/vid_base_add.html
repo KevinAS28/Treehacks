@@ -7,9 +7,12 @@
 </head>
 <body>
   <body>
-    <h1>Register your face</h1>
-    <h2>Please turn your face to left and to right SLOWLY</h2>
+    <h1>Hello {{ name }} please register your face</h1>
+    <h2>Please turn your face to left and to right SLOWLY. And hit done button after that</h2>
     <img src="{% url 'patients_app:add_face_src' %}">
+    <form method="GET" action="{% url 'patients_app:patient_startup' %}">
+      <input type="submit" value="Done"/>
+    </form>
   </body>
     
 </body>

@@ -1,6 +1,24 @@
 {% extends 'patient/both_navbar.html' %}
 {% block records_body %}
 
+
+<div class="d-flex align-items-left">
+  <div class="d-inline-block">
+    <h2>{{title}}</h2>
+  </div>
+  {% if edit_link %}
+  <div class="d-inline-block">
+    <a href="{% url edit_link %}">edit</a>
+  </div>
+  {% endif %}
+  {% if add_link %}
+  <div class="d-inline-block">
+    <a href="{% url add_link %}">add</a>
+  </div>
+  {% endif %}
+</div>
+
+
 {% if records %}
 <table class="table">
   <thead>
@@ -15,7 +33,7 @@
   <tbody>
     {% for row in records %}
     <tr>
-      <td><a href="{{row.name}}">{{row.name}}</a></td>
+      <td><a href="{{ row.pdf.url }}" download>{{row.name}}</a></td>
       <td>{{row.description}}</td>
       <td><img src="{{row.qr}}" alt="qr code associated with record."/></td>
       <td>{{row.authorisedBy}}</td>

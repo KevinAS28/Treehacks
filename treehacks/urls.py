@@ -17,6 +17,8 @@ from django.urls import path, include
 from common import views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib.auth import views as auth_views
+from .settings import MEDIA_ROOT, MEDIA_URL
+from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -36,4 +38,4 @@ urlpatterns = [
     path('forum/question/<int:questionId>',views.question,name="question")
 ]
 
-urlpatterns += staticfiles_urlpatterns()
+urlpatterns += staticfiles_urlpatterns() + static(MEDIA_URL, document_root=MEDIA_ROOT)

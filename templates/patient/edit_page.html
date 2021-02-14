@@ -1,0 +1,17 @@
+{% extends 'patient/both_navbar.html' %}
+{% block records_body %}
+
+<form method="POST" action="" enctype="multipart/form-data">
+  {% csrf_token %}
+{% for section in sections %}
+<h2>{{ section.name }}</h2>
+{% for form in section.forms %}
+  {{ form.as_ul }}
+{% empty %}
+<p>None. After completing your edit, go to the add page to add a new record.</p>
+{% endfor %}
+{% endfor %}
+<button type="submit" class="btn btn-primary">Save changes</button>
+
+</form>
+{% endblock records_body %}
