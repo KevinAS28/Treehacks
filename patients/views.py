@@ -66,10 +66,8 @@ def add_face_src(request):
     frames = gen(request, camera_add.VideoCamera(FRGraph, aligner, extract_feature, face_detect, name=request.session["email"]))
     return StreamingHttpResponse(frames, content_type='multipart/x-mixed-replace; boundary=frame')
 
-
 def add_face(request):
     return render(request, 'vid_base_add.html')
-
 
 
 #### all the account processes
