@@ -27,7 +27,12 @@ class PatientProfile(models.Model):
 class Document(models.Model): #stores individual documents
     patient = models.ForeignKey(PatientProfile,on_delete=models.CASCADE)
     issued_by = models.ForeignKey(DoctorProfile,on_delete=models.CASCADE)
+    category = models.CharField(max_length=100, choices=(('Prescription', 'Prescription'), ('Results', 'Results'), ('Other', 'Other')))
     pdf = models.FileField(upload_to='prescription_pdfs')
+    name = models.CharField(max_length=200)
+    description = models.CharField(max_length=200)
+    qr = models.CharField(max_length=200)
+    date_uploaded = models.DateField()
 
 class DocumentSelfIssued(models.Model): #stores individual documents
     patient = models.ForeignKey(PatientProfile,on_delete=models.CASCADE)

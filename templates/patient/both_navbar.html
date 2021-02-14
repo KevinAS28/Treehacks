@@ -10,7 +10,9 @@
       <h2>Patient health record</h2>
         <a class="nav-link" aria-current="page" href="{% url 'doctor:view_patient' %}">&emsp;Personal information</a>
         <a class="nav-link" aria-current="page" href="{% url 'doctor:view_emergency' %}">&emsp;Emergency details</a>
-        <a class="nav-link" aria-current="page" href="{% url 'doctor:patient_files' %}">&emsp;All Files</a>
+        <a class="nav-link" aria-current="page" href="{% url 'doctor:patient_files' %}">&emsp;Files shared by Patient</a>
+        <a class="nav-link" aria-current="page" href="{% url 'doctor:doctor_files' %}">&emsp;Your Files</a>
+        <a class="nav-link" aria-current="page" href="{% url 'doctor:upload_files' %}">&emsp;Upload a files</a>
 
       {% else %}
         <h2>Your health record</h2>

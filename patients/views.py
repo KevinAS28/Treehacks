@@ -501,17 +501,71 @@ def editEmergency(request):
 @login_required
 def prescriptions(request):
   patient = getPatient(request)
+  docs = Document.objects.filter(patient=patient, category="Prescription")
+  records = []
+  for doc in docs:
+    records.append(
+    {
+      "pdf": doc.pdf,
+      "name": doc.name,
+      "description": doc.description,
+      "qr": doc.qr,
+      "authorisedBy": doc.issued_by,
+      "date": doc.date_uploaded
+    }
+    )
 
-  return render(request,'patient/files.html', {"title": "Your prescriptions", "records": []})
+  return render(request,'patient/files.html', {"title": "Your prescriptions", "records": records})
 
 @login_required
 def tests(request):
   patient = getPatient(request)
 
-  return render(request,'patient/files.html', {"title": "Your test, scans and z-ray results", "records": []})
+  docs = Document.objects.filter(patient=patient, category="Test")
+  records = []
+  for doc in docs:
+    records.append(
+    {
+      "pdf": doc.pdf,
+      "name": doc.name,
+      "description": doc.description,
+      "qr": doc.qr,
+      "authorisedBy": doc.issued_by,
+      "date": doc.date_uploaded
+    }
+    )
+
+  return render(request,'patient/files.html', {"title": "Your test, scans and z-ray results", "records": records})
 
 @login_required
 def otherFiles(request):
   patient = getPatient(request)
+
+  docs = Document.objects.filter(patient=patient, category="Other")
+  records = []
+  for doc in docs:
+    records.append(
+    {
+      "pdf": doc.pdf,
+      "name": doc.name,
+      "description": doc.description,
+      "qr": doc.qr,
+      "authorisedBy": doc.issued_by,
+      "date": doc.date_uploaded
+    }
+    )
+
+  records = []
+  for doc in docs:
+    records.append(
+    {
+      "pdf": doc.pdf,
+      "name": doc.name,
+      "description": doc.description,
+      "qr": doc.qr,
+      "authorisedBy": doc.issued_by,
+      "date": doc.date_uploaded
+    }
+    )
 
   return render(request,'patient/files.html', {"title": "Other files", "records": []})

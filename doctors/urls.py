@@ -12,6 +12,8 @@ urlpatterns = [
     path('emergency', views.view_emergency, name="view_emergency"),
     path('emergency/<int:page_section>', views.view_emergency, name="view_emergency"),
     path('files', views.documents, name="patient_files"), 
+    path('upload', views.uploadFiles, name="upload_files"),
+    path('shared', views.doctor_files, name="doctor_files"),
 
     path('prescribe',views.prescribe,name="give_prescriptions"),
     path('give_prescriptions',views.give_prescriptions,name="give_prescriptions"),

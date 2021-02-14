@@ -3,7 +3,7 @@ from patients.models import PatientProfile, Document, TreatmentsandMedicines, Al
 from django.contrib.auth.models import User, auth, Group
 from .models import DoctorProfile
 from django import forms
-from .forms import DoctorCreation, SignUpForm
+from .forms import DoctorCreation, SignUpForm, uploadForm
 from django.contrib.auth.forms import UserCreationForm
 import time
 import datetime
@@ -279,6 +279,8 @@ def view_emergency(request, page_section=0):
     }
   )
 
+@user_passes_test(isDoctor)
+@login_required
 def documents(request):
   patient = getPatient(request)
   docs = DocumentSelfIssued.objects.filter(patient=patient)
@@ -295,4 +297,50 @@ def documents(request):
       "date": doc.date_uploaded
     }
     )
+
+  return render(request,'patient/files.html', {"title": "Files shared by patient", "records": records, 'doctor': True})
+
+@user_passes_test(isDoctor)
+@login_required
+def uploadFiles(request):
+  doctor = DoctorProfile.objects.get(user=request.user)
+  patient = getPatient(request)
+  forms = [uploadForm(request.POST or None, request.FILES or None)]
+
+  if request.POST:
+    valid = True
+    for form in forms:
+      valid = form.is_valid() and valid
+    if valid:
+      for form in forms:
+        obj = form.save(commit=False)
+        obj.patient = patient 
+        obj.issued_by = doctor
+        obj.date_uploaded = datetime.date.today()
+        obj.save()
+      return redirect(reverse('doctor:patient_files'))
+  
+  contact = {'name': 'Add an allergy', 'forms': forms}
+  return render(request, 'patient/edit_page.html', {'sections': [contact], 'doctor': True})
+
+@user_passes_test(isDoctor)
+@login_required
+def doctor_files(request):
+  patient = getPatient(request)
+  doctor = DoctorProfile.objects.get(user=request.user)
+  docs = Document.objects.filter(issued_by=doctor)
+  
+  records = []
+  for doc in docs:
+    records.append(
+    {
+      "pdf": doc.pdf,
+      "name": doc.name,
+      "description": doc.description,
+      "qr": doc.qr,
+      "authorisedBy": "%s %s" % (patient.user.first_name, patient.user.last_name),
+      "date": doc.date_uploaded
+    }
+    )
+
   return render(request,'patient/files.html', {"title": "Files shared by patient", "records": records, 'doctor': True})
