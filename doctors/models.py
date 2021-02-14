@@ -10,5 +10,4 @@ class DoctorProfile(models.Model):
     date_of_birth = models.DateField(default = "2000-02-03")
     # facial recognition field
     def __str__(self):
-        return str(self.label)+" "+str(self.user)
-
+        return str(self.user)
