@@ -49,4 +49,4 @@ class EmergencyRecordForm(forms.ModelForm):
 class DocumentSelfIssuedForm(forms.ModelForm):
   class Meta:
     model = DocumentSelfIssued
-    exclude = ['patient', 'date_uploaded']
+    exclude = ['patient', 'date_uploaded', 'qr']

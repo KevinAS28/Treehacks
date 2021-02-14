@@ -466,9 +466,9 @@ def editEmergency(request):
 
   emergencySummaryForms = []
   objs = EmergencyRecord.objects.filter(patient=patient)
-  for obj in objs:
+  for obj in objs: 
     emergencySummaryForms.append(EmergencyRecordForm(request.POST or None, instance=obj))
-  if not obj:
+  if not objs:
     emergencySummaryForms.append(EmergencyRecordForm(request.POST or None))
 
   contactForms = []
