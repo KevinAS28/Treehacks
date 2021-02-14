@@ -110,6 +110,26 @@ def signup(request):
     {'form': form, 'form1': form1, 'form2': form2}
   )
 
+def patient_login(request):	
+  return render(request,'account/patient_login.html')	
+
+def login(request):	
+    # loginprocess	
+    if request.method=="POST":	
+        username = request.POST.get('username','')	
+        user_password = request.POST.get('password','')	
+
+        #authentication	
+        user = auth.authenticate(username= username, password = user_password)	
+        if user is not None:	
+            auth.login(request,user)	
+            messages.success(request,"Logged In")	
+            return redirect('/feed')	
+        else:	
+            messages.error(request,"Invalid credentials")	
+            return redirect('/')	
+
+
 def documents(request):
     patient_id = request.POST.get('patient_id')
     patient = PatientProfile.objects.get(id = patient_id)
