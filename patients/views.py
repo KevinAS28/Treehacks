@@ -69,9 +69,6 @@ def services(request):
     # about us page of the application
     return render(request,'patient/our_services.html')
 
-
-  
-
 # ----------------------------------------------------------------------------------------------------#
 # Patients Health Records
 
@@ -121,7 +118,11 @@ def getPatient(request):
   user = request.user
   patient = PatientProfile.objects.get(user=user)
   return patient
-
+'''
+@login_required
+def setEmergencyContacts(request):
+    return render(request, 'patient/')
+'''
 @login_required
 def healthRecord(request, page_section=0):
   patient = getPatient(request)
