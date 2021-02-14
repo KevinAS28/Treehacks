@@ -212,7 +212,7 @@ def healthRecord(request, page_section=0):
   user = patient.user
 
   patient_name = "%s %s" % (user.first_name, user.last_name)
-  patient_photo = "/static/img/avatar.png"
+  patient_photo = patient.profilePicture.url
   main_display = [
     {'title': 'Date of birth', 'value': patient.date_of_birth},
     {'title': 'Sex', 'value': patient.sex},
@@ -383,7 +383,7 @@ def emergency(request, page_section=0):
   user = patient.user
 
   patient_name = "%s %s" % (user.first_name, user.last_name)
-  patient_photo = "/static/img/avatar.png"
+  patient_photo = patient.profilePicture.url
   main_display = "Don't let me die. Very broken bones. Handle with care. Do not ship internationally."
 
   emergencySummaryForms = []
@@ -523,4 +523,3 @@ def otherFiles(request):
   patient = getPatient(request)
 
   return render(request,'patient/files.html', {"title": "Other files", "records": []})
-
