@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <form method="POST" action='give_prescriptions'>
+        {% csrf_token %}
+        <input type="text" class="form-control" placeholder="Patient ID" name="pid"> 
+        <input type="text" class="form-control" placeholder="Doctor ID" name="did"> 
+        <input type="file" accept="application/pdf" name="file" >
+        <button type="submit" class="btn btn-primary">Submit</button>
+    <form>
+{% endblock body %}

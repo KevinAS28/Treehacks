@@ -5,6 +5,22 @@ from . import views
 app_name = "patients_app"
 
 urlpatterns = [
-    path('',views.startup,name="patientstartup"),
-    path('signup/', views.signup, name="patientsignup")
+
+    path('', views.startup, name="patient_startup"),
+    path('signup',views.signup,name="patient_signup"),
+
+    path('aboutus',views.services,name="about_us"),
+
+    path('health/info', views.healthRecord, name="patient_health"),
+    path('health/info/<int:page_section>', views.healthRecord, name="patient_health"),
+
+    path('health/emergency', views.emergency, name="patient_emergency"),
+    path('health/emergency/<int:page_section>', views.emergency, name="patient_emergency"),
+
+    path('health/files', views.healthRecord, name="patient_files"),
+
+    path('shared/prescriptions', views.prescriptions, name="shared_prescriptions"),
+    path('shared/tests', views.tests, name="shared_tests"),
+    path('shared/other', views.otherFiles, name="shared_other"),
+
 ]

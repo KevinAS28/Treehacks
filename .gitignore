@@ -9,3 +9,12 @@ patients/__pycache__
 common/__pycache__
 
 treehacks/__pycache__
+
+common/migrations
+
+patients/migrations
+
+doctors/migrations
+
+db.sqlite3
+

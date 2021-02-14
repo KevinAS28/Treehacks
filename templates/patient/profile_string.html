@@ -1,0 +1,15 @@
+{% extends 'patient/profile.html' %}
+{% block profile_head %}
+
+{{ main_display }}
+
+<div class="d-flex align-items-left">
+  {% for flag in flags %}
+  <div class="d-inline-block" style="background-color: #f8a347; padding: 5px 10px; margin:5px;">
+    {{flag}}
+  </div>
+  {% endfor %}
+</div>
+
+
+{% endblock profile_head %}

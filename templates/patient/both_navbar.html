@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="containter">
+  <div class="row">
+    <div class="col-sm-2">
+      <nav class="navbar flex-column navbar-light text-left" style="height: 100vh">
+        <h2>Your health record</h2>
+        <a class="nav-link" aria-current="page" href="{% url 'patient_health' %}">&emsp;Personal information</a>
+        <a class="nav-link" aria-current="page" href="{% url 'patient_emergency' %}">&emsp;Emergency details</a>
+        <a class="nav-link" aria-current="page" href="{% url 'patient_files' %}">&emsp;Your Files</a>
+        
+        <h2>Shared by Doctor</h2>
+        <a class="nav-link" aria-current="page" href="{% url 'shared_prescriptions' %}">&emsp;Prescriptions</a>
+        <a class="nav-link" aria-current="page" href="{% url 'shared_tests' %}">&emsp;Tests, scans and x-ray results</a>
+        <a class="nav-link" aria-current="page" href="{% url 'shared_other' %}">&emsp;Other Files</a>
+          
+      </nav>
+    </div>
+
+    <div class="col-sm-10">
+      <div class="d-flex align-items-left">
+        <div class="d-inline-block">
+          <h2>{{title}}</h2>
+        </div>
+        <div class="d-inline-block">
+          <a href="#">edit</a>
+        </div>
+        <div class="d-inline-block">
+          <a href="#">add</a>
+        </div>
+      </div>
+
+      {% block records_body %}
+      {% endblock records_body %}
+    </div>
+  </div>
+</div>
+
+{% endblock body %}
