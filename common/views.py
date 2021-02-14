@@ -36,3 +36,4 @@ def question(request, questionId):
   # answers = Answer.objects.filter(question = question)
   return render(request, 'common/question.html',{'question':ques}) 
   # return redirect('/')
+  
