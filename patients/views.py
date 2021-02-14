@@ -67,6 +67,11 @@ import camera_auth, camera_add
 # ----------------------------------------------------------------------------------------------------#
 # Patients Account access
 
+# Todo
+@login_required
+def alertContacts(request):
+  return render(request, 'patient/alert_contacts.html')
+
 def signup(request):
   form = SignUpForm()
   form1 = UserCreationForm()
@@ -157,11 +162,6 @@ def getPatient(request):
   user = request.user
   patient = PatientProfile.objects.get(user=user)
   return patient
-'''
-@login_required
-def setEmergencyContacts(request):
-    return render(request, 'patient/')
-'''
 
 @login_required
 def healthRecord(request, page_section=0):
