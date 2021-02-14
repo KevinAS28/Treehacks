@@ -5,7 +5,6 @@ class DoctorProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     medical_license_number = models.CharField(max_length=50, default = " ")
     proof = models.FileField(upload_to='proof_pdfs', null = True)
-    label = models.CharField(max_length=200, default = "Doctor")  # patient, doctor or hospital
     country = models.CharField(max_length=200, default = "India")
     city = models.CharField(max_length=200, default = "Delhi")
     date_of_birth = models.DateField(default = "2000-02-03")
