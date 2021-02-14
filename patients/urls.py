@@ -12,6 +12,8 @@ urlpatterns = [
 
     path('aboutus/',views.services,name="about_us"),
 
+    #path('emergencycontacts/', views.setEmergencyContacts, name="emergency_contacts")
+
     path('health/info', views.healthRecord, name="patient_health"),
     path('health/info/<int:page_section>', views.healthRecord, name="patient_health"),
 
@@ -23,5 +25,12 @@ urlpatterns = [
     path('shared/prescriptions', views.prescriptions, name="shared_prescriptions"),
     path('shared/tests', views.tests, name="shared_tests"),
     path('shared/other', views.otherFiles, name="shared_other"),
+
+
+    path('add_face', views.add_face, name='add_face'),
+    path('add_face_src', views.add_face_src, name='add_face_src'),
+    path('auth_face', views.auth_face, name='auth_face'),
+    path('auth_face_src', views.auth_face_src, name='auth_face_src'),
+
 
 ]

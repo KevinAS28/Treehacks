@@ -1,24 +1,76 @@
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth.models import User, auth, Group
 from django.contrib import messages
-
-from .models import PatientProfile
+from django.http import StreamingHttpResponse
 from django.views.decorators.csrf import csrf_exempt
-
-from .models import PatientProfile, Document, TreatmentsandMedicines, Allergies, Lifestyle, HealthConditions
 from django.contrib.auth.decorators import login_required, user_passes_test
-from .forms import PatientCreation, SignUpForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
 
 
+from .models import PatientProfile
+from .models import PatientProfile, Document, TreatmentsandMedicines, Allergies, Lifestyle, HealthConditions
+from .forms import PatientCreation, SignUpForm
+
+#face recogntion
+from align_custom import AlignCustom
+from face_feature import FaceFeature
+from mtcnn_detect import MTCNNDetect
+from tf_graph import FaceRecGraph
+import camera_auth, camera_add
+
+
+#### Facial Recognition Functions
+# ----------------------------------------------------------------------------------------------------#
+
+
+#Face recognition module. It will take around 30 seconds to run. 
+print("\n\nLoading face recognition modules...")
+FRGraph = FaceRecGraph()
+aligner = AlignCustom()
+extract_feature = FaceFeature(FRGraph)
+face_detect = MTCNNDetect(FRGraph, scale_factor=2)
+print("Done\n\n")
+
+
+def gen(camera):
+    while True:
+        frame = camera.get_frame()
+        if frame==None:
+            break
+
+        vid =  (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+
+        yield vid
+
+    print("Done")
+
+
+def add_face_src(request):
+    frames = gen(camera_add.VideoCamera(FRGraph, aligner, extract_feature, face_detect))
+    return StreamingHttpResponse(frames, content_type='multipart/x-mixed-replace; boundary=frame')
+
+
+def add_face(request):
+    # frames = gen(camera_add.VideoCamera(FRGraph, aligner, extract_feature, face_detect))
+    # return StreamingHttpResponse(frames, content_type='multipart/x-mixed-replace; boundary=frame')
+    return render(request, 'vid_base_add.html')
+
+def auth_face_src(request):
+    frames = gen(camera_auth.VideoCamera(FRGraph, aligner, extract_feature, face_detect))
+    return StreamingHttpResponse(camera_auth.gen(frames, content_type='multipart/x-mixed-replace; boundary=frame'))
+
+def auth_face(request):
+    return render(request, 'vid_base_auth.html')
+
+
+
+
+
+
+
+
 #### all the account processes
-
-def scan_face(request):
-    pass
-
-
-
 # ----------------------------------------------------------------------------------------------------#
 # Patients Account access
 
@@ -68,25 +120,6 @@ def documents(request):
 def services(request):
     # about us page of the application
     return render(request,'patient/our_services.html')
-
-def patient_login(request):
-  return render(request,'account/patient_login.html')
-
-def login(request):
-    # loginprocess
-    if request.method=="POST":
-        username = request.POST.get('username','')
-        user_password = request.POST.get('password','')
-
-        #authentication
-        user = auth.authenticate(username= username, password = user_password)
-        if user is not None:
-            auth.login(request,user)
-            messages.success(request,"Logged In")
-            return redirect('/feed')
-        else:
-            messages.error(request,"Invalid credentials")
-            return redirect('/')
 
 
 # ----------------------------------------------------------------------------------------------------#
@@ -138,7 +171,11 @@ def getPatient(request):
   user = request.user
   patient = PatientProfile.objects.get(user=user)
   return patient
-
+'''
+@login_required
+def setEmergencyContacts(request):
+    return render(request, 'patient/')
+'''
 @login_required
 def healthRecord(request, page_section=0):
   patient = getPatient(request)
