@@ -76,7 +76,7 @@ def auth_face(request):
 
 def startup(request):
     # startup page of the application
-    return render(request,'account/patient_signup.html')
+    return render(request,'account/signup.html')
 
 
 @csrf_exempt
