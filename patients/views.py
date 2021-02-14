@@ -1,8 +1,12 @@
 from django.shortcuts import render, HttpResponse, redirect
-from django.contrib.auth.models import User, auth
+from django.contrib.auth.models import User, auth, Group
 from django.contrib import messages
 from .models import PatientProfile, Document, TreatmentsandMedicines, Allergies, Lifestyle, HealthConditions
 from django.contrib.auth.decorators import login_required, user_passes_test
+from .forms import PatientCreation, SignUpForm
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate, login
+
 # ----------------------------------------------------------------------------------------------------#
 # Patients Account access
 def startup(request):
@@ -10,36 +14,33 @@ def startup(request):
     return render(request,'account/patient_signup.html')
 
 def signup(request):
-  # signup process
-  if request.method=='POST':
-    # checks if request method is POST
-    username = request.POST.get('username','')
-    mail = request.POST.get('email','')
-    fname = request.POST.get('fname','')
-    lname = request.POST.get('lname','')
-    password = request.POST.get('password','')
-    conf_pass = request.POST.get('confpassword','')
-    addressline1 = request.POST.get('addressline1','')
-    addressline2 = request.POST.get('addressline2','')
-    country = request.POST.get('country','')
-    city = request.POST.get('city','')
-    date_of_birth = request.POST.get('dob','')
-    # to check if person already exists
-    # sameUser=User.objects.filter(fname = fname, lname = lname)
-    # for user in sameUser:
-    #     if PatientProfile.objects.filter(user = user, country = country, city = city):
-    #         messages.error(request,"Person already exists")
-    #         return redirect('/')
+  form = SignUpForm()
+  form1 = UserCreationForm()
+  form2 = PatientCreation()
+  if request.POST:
+    form = SignUpForm(request.POST)
+    form1 = UserCreationForm(request.POST)
+    form2 = PatientCreation(request.POST, request.FILES)
+    if form.is_valid() and form1.is_valid() and form2.is_valid():
+      user = form1.save(commit=False)
+      user.first_name = form.cleaned_data['first_name']
+      user.last_name = form.cleaned_data['last_name']
+      user.email = form.cleaned_data['email']
+      user.save()
 
-    # to check if password and conf password match
-    if password==conf_pass:
-      user_obj = User.objects.create_user(username = username, first_name = fname, last_name = lname, password = password, email = mail)
-      user_obj.save()
-      patient_obj = PatientProfile(user = user_obj,  city = city, date_of_birth=date_of_birth, country = country, addressline1 = addressline1, addressline2 = addressline2)
-      patient_obj.save()
-    return redirect('/')
-  else:
-    return render(request,'account/patient_signup.html')
+      patient_group = Group.objects.get(name='Patient')
+      patient = form2.save(commit=False)
+      patient.user = user
+      patient.save()
+      patient_group.user_set.add(user)
+      loggedIn = authenticate(username=form1.cleaned_data['username'], password=form1.cleaned_data['password1'])
+      login(request, loggedIn)
+      return redirect('/')
+  return render(
+    request,
+    'account/signup.html',
+    {'form': form, 'form1': form1, 'form2': form2}
+  )
 
 def documents(request):
     patient_id = request.POST.get('patient_id')
@@ -99,6 +100,7 @@ def LifestyleToString(patient_id):
 @login_required
 def getPatient(request):
   user = request.user
+  print(user)
   patient = PatientProfile.objects.get(user=user)
   return patient
 

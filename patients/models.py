@@ -6,14 +6,13 @@ from doctors.models import DoctorProfile
 class PatientProfile(models.Model):  
     # Patient profile
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    label = models.CharField(max_length=200, default = "Patient")  # patient, doctor or hospital
     date_of_birth = models.DateField()
     profilePicture = models.ImageField(upload_to="profilePics")
     addressline1 =  models.CharField(max_length=200, default = " ")
     addressline2 =  models.CharField(max_length=200, default = " ")
     country = models.CharField(max_length=200)
     city = models.CharField(max_length=200)
-    zipcode = models.IntegerField(default="0")
+    zipcode = models.CharField(max_length=12)
 
     sex = models.CharField(max_length=20)
     pronouns = models.CharField(max_length=100)
@@ -22,7 +21,7 @@ class PatientProfile(models.Model):
 
     # facial recognition field
     def __str__(self):
-        return str(self.label)+" "+str(self.user)
+        return "Patient: "+" "+str(self.user)
 
 
 class Document(models.Model): #stores individual documents

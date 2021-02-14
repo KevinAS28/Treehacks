@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <div class='container my-4'>
+  <!--form for creating an account-->
+  <h3>Create An Account</h3>
+  <form method="POST" action='signup' enctype='multipart/form-data'>
+    {% csrf_token %}
+    {{ form.as_ul }}
+    <br/>
+    {{ form1.as_ul }}
+    <br/>
+    {{ form2.as_ul }}
+    <button type="submit" class="btn btn-primary">Register</button>
+  </form>
+</div>
+{% endblock body %}
