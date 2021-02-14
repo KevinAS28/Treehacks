@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block body %}
-<form method="POST" action="{% url 'patients_app:patientsignup' %}">
+<form method="POST" action="{% url 'patients_app:patient_signup' %}">
     <input placeholder="username"     name="username"      type="text"/><br/>
     <input placeholder="email"        name="email"         type="email"/><br/>
     <input placeholder="fname"        name="fname"         type="text"/><br/>
