@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <div class="container my-4 post-box" style = "border:30px; border-radius:50px;">
+        <div class="card" >
+        {% comment %} href="{% url 'question' qna.question.id%}"" {% endcomment %}
+            <h5 class="card-header" style="background-color:#4ebca7; font-size:30px;"><a href="{% url 'question' question.id %}" style="color:black;"> {{question.text}} </a><small style="font-size:10px;">{{ question.date }}</small></h5>
+        </div>
+    </div>
+    {% for answer in answers %}
+    <div class="container my-4 post-box" style = "border:40px">
+        <p style="background-color:#e0f7fa; color: black;"> {{ answer.text }}  </p>
+    </div>
+    {% endfor %}
+
+    
+{% endblock body %}

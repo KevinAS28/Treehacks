@@ -26,16 +26,16 @@ def forum(request):
   qna = Question.objects.all().order_by('-pk')
   objs = []
   for question in qna:
-      answers = Answer.objects.filter(question = question).order_by('-pk')
+      answers = Answer.objects.filter(question_id = question.id).order_by('-pk')
       objs.append({'question':question,'answers':answers})
   # for obj in objs:
   #   print(obj.question.text)
   return render(request, 'common/forum.html',{'objs':objs})
 
-def question(request, questionId):
-  print(questionId)
-  ques = Question.objects.get(id = int(questionId))
-  # answers = Answer.objects.filter(question = question)
-  return render(request, 'common/question.html',{'question':ques}) 
-  # return redirect('/')
+# def question(request, questionId):
+#   print(questionId)
+#   ques = Question.objects.get(id = int(questionId))
+#   answers = Answer.objects.filter(question_id = ques.id)
+#   return render(request, 'common/question.html',{'question':ques, 'answers':answers}) 
+#   # return redirect('/')
   

@@ -34,8 +34,7 @@ urlpatterns = [
     path('patients/',include('patients.urls', namespace='patient'),name='patient'),  
     
     path('contact_us',views.contact_us,name="contact_us"),
-    path('forum',views.forum,name="forum"),
-    path('forum/question/<int:questionId>',views.question,name="question")
+    path('forum',views.forum,name="forum")
 ]
 
 urlpatterns += staticfiles_urlpatterns() + static(MEDIA_URL, document_root=MEDIA_ROOT)

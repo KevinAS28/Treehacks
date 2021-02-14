@@ -1,12 +1,56 @@
 {% extends 'base.html' %}
+
 {% block body %}
-    {% for qna in objs %}
-    <div class="container my-4 post-box" id="{{qna.question.id}}">
-        <div class="card">
-        {% comment %} href="{% url 'question' qna.question.id%}"" {% endcomment %}
-            <h5 class="card-header"><a href="{% url 'question' qna.question.id %}" style="color:black;"> {{qna.question.text}} </a><small>{{qna.question.date}}</small></h5>
-            <a href="{% url 'question' qna.question.id %}"> {{ qna.answers.len }} Replies </a>
+    
+
+<div class="containter">
+  <div class="row">
+    <div class="col-sm-2">
+      <nav
+        class="navbar flex-column navbar-light text-left"
+        style="height: 100%"
+      >
+        <h1>Recently asked</h1>
+        {% for qna in objs %}
+            <a class="nav-link" aria-current="page" href="#" style = "background-color:#005d4c; margin-bottom:5px; font-size: 12px;">&emsp; {{qna.question.text}}</a>
+        {% endfor %}
+        <h1>Most Popular</h1>
+        {% for qna in objs  %}
+            <a class="nav-link" aria-current="page" href="#" style = "background-color:#005d4c; margin-bottom:5px; font-size: 12px;">&emsp; {{qna.question.text}}</a>
+        {% endfor %}
+        </nav>
+    </div>
+    <div class="d-flex align-items-left col" style = "margin-left:20%;margin-right:5%">
+    <div class="d-inline-block">
+      {% for qna in objs %}
+        <div id="accordion">
+        <div class="card" style = "margin:30px">
+            <div class="card-header" id="headingOne" style="background-color:#4ebca7;">
+            <h5 class="mb-0">
+                <button class="btn btn-link" data-toggle="collapse" style="color:black; text-decoration: none; font-size: 20px;"data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    {{qna.question.text}} 
+                </button>
+            </h5>
+            </div>
+
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="card-body" style = "background-color:#e0f2f1;">
+                    {% for answer in qna.answers %}
+                        <div class="card" style = "padding:20px;background-color:#e0f2f1;">
+                            <p>{{ answer.text }}</p> <small style="font-size:10px;">{{answer.given_by}}</small>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        </div>
         </div>
     </div>
-    {% endfor %}
+  </div>
+</div>
+
+
+
+
 {% endblock body %}
