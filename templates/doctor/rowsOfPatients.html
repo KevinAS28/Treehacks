@@ -1,0 +1,43 @@
+{% extends 'base.html' %} {% block body %}
+<div class="containter">
+
+<form method="post" action="">
+  {% csrf_token %}
+
+  <h2>View all patients</h2>
+  <div class="d-flex align-items-left">
+    <h4 class="d-inline-block">Or search for a specific patient by their username</h4>
+    <input name='search' value="" type='text' class="d-inline-block"/>
+    <input type="submit" name="search_submit" class="btn btn-primary d-inline-block" value="search"/>
+  </div>
+
+  {% if records %}
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Name</th>
+        <th>Date of birth</th>
+        <th>Postcode</th>
+        <th>View patient</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in records %}
+      <tr>
+        <td>{{row.username}}</a></td>
+        <td>{{row.name}}</td>
+        <td>{{row.dob}}</td>
+        <td>{{row.postcode}}</td>
+        <td><input type="submit" name="patient_{{row.pk}}" value=""/></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p>No records available.</p>
+  {% endif %}
+</form>
+
+{% endblock body %}

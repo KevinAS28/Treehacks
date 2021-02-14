@@ -34,7 +34,11 @@
           Please try again.
       </p>
   {% endif %}
-  <a href="/patients/signup">Patient Sign up here</a>
+  <br/>
+  <a href="{% url 'patient:patient_signup' %}">Patient Sign up here</a>
+  <br/>
+  <a href="{% url 'doctor:doctor_signup' %}">Doctor Sign up here</a>
+
 </form>
 </div>
 {% endblock %}

@@ -12,7 +12,7 @@ def redirectUser(request):
     return redirect(reverse('patient:patient_health'))
 
   if user.groups.filter(name="Doctor"):
-    return redirect(reverse('startup'))
+    return redirect(reverse('doctor:search_patients'))
 
   if user.groups.filter(name="Administrator"):
     return redirect(reverse('startup'))

@@ -5,12 +5,14 @@
   <div class="d-inline-block">
     <h2>{{title}}</h2>
   </div>
+  {% if edit_link %}
   <div class="d-inline-block">
     <a href="{% url edit_link %}">edit </a>
   </div>
   <div class="d-inline-block">
     <a href="{% url add_link %}">add</a>
   </div>
+  {% endif %}
 </div>
 
 <div class="d-flex align-items-left">
@@ -29,7 +31,7 @@
 <div>
   <nav class="navbar justify-content-center sub-nav nav-fill nav-pills">
   {% for sub in subtitles %}
-    <a class="nav-link {% if sub.active %}active{% endif %}" href="{{url_path}}/{{sub.page_section}}" {% if sub.active %} style="background-color: #f8a347" {% endif %}>{{ sub.title }}</a>
+    <a class="nav-link {% if sub.active %}active{% endif %}" href="{% url url_path %}/{{sub.page_section}}" {% if sub.active %} style="background-color: #f8a347" {% endif %}>{{ sub.title }}</a>
   {% endfor %}
   </nav>
   {% for sub in subtitles %}

@@ -240,11 +240,7 @@ def healthRecord(request, page_section=0):
   else:
     add_link = "add_lifestyle"
 
-  try:
-    int(request.path.split('/')[-1])
-    url_path = "/".join(request.path.split('/')[:-1])
-  except ValueError:
-    url_path = request.path
+  url_path = 'patient:patient_health'
 
   return render(
     request, 
@@ -420,11 +416,7 @@ def emergency(request, page_section=0):
   for obj in HealthConditions.objects.filter(patient=patient):
     flags.append(obj.name)
 
-  try:
-    int(request.path.split('/')[-1])
-    url_path = "/".join(request.path.split('/')[:-1])
-  except ValueError:
-    url_path = request.path
+  url_path = "patient:patient_emergency"
 
   return render(
     request, 
