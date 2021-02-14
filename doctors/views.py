@@ -6,10 +6,6 @@ from django import forms
 
 # Create your views here.
 
-def startup(request):
-    # startup page of the application
-    return render(request,'account/doctor_signup.html')
-
 class ProfileForm(forms.Form):
    doc = forms.FileField()
 

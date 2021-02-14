@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% block body %}
+<!--form for creating an account-->
 <div class="container my-4">
-  <!--form for creating an account-->
   <h3>Create An Account</h3>
   <form method="POST" action="" enctype="multipart/form-data">
     {% csrf_token %} {{ form.as_ul }}

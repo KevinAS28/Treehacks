@@ -27,14 +27,13 @@ import camera_auth, camera_add
 # ----------------------------------------------------------------------------------------------------#
 
 
-#Face recognition module. It will take around 30 seconds to run. 
+# #Face recognition module. It will take around 30 seconds to run. 
 print("\n\nLoading face recognition modules...")
 FRGraph = FaceRecGraph()
 aligner = AlignCustom()
 extract_feature = FaceFeature(FRGraph)
 face_detect = MTCNNDetect(FRGraph, scale_factor=2)
 print("Done\n\n")
-
 
 def gen(request, camera):
     while not camera.done:
@@ -70,18 +69,17 @@ def add_face(request):
     return render(request, 'vid_base_add.html')
 
 
+
 #### all the account processes
 # ----------------------------------------------------------------------------------------------------#
 # Patients Account access
 
-def startup(request):
-    # startup page of the application
-    return render(request,'account/patient_signup.html')
+# Todo
+@login_required
+def alertContacts(request):
+  return render(request, 'patient/alert_contacts.html')
 
-
-@csrf_exempt
 def signup(request):
-
   form = SignUpForm()
   form1 = UserCreationForm()
   form2 = PatientCreation()
@@ -124,6 +122,7 @@ def documents(request):
 def services(request):
     # about us page of the application
     return render(request,'patient/our_services.html')
+
 
 # ----------------------------------------------------------------------------------------------------#
 # Patients Health Records
@@ -174,11 +173,7 @@ def getPatient(request):
   user = request.user
   patient = PatientProfile.objects.get(user=user)
   return patient
-'''
-@login_required
-def setEmergencyContacts(request):
-    return render(request, 'patient/')
-'''
+
 @login_required
 def healthRecord(request, page_section=0):
   patient = getPatient(request)
@@ -192,7 +187,7 @@ def healthRecord(request, page_section=0):
     {'title': 'Sex', 'value': patient.sex},
     {'title': 'Pronouns', 'value': patient.pronouns},
     {'title': 'Race', 'value': patient.race},
-    {'title': 'Phone number', 'value': patient.number},
+    {'title': 'Phone number', 'value': patient.phone_number},
     {'title': 'Email', 'value': user.email},
     {'title': 'Address', 'value': "%s, %s, %s, %s, %s" % (patient.addressline1, patient.addressline2, patient.city, patient.country, patient.zipcode)},
   ]
