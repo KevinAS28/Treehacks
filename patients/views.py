@@ -121,6 +121,7 @@ def services(request):
     # about us page of the application
     return render(request,'patient/our_services.html')
 
+
 # ----------------------------------------------------------------------------------------------------#
 # Patients Health Records
 

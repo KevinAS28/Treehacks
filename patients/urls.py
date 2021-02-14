@@ -7,7 +7,8 @@ app_name = "patients_app"
 urlpatterns = [
 
     path('', views.startup, name="patient_startup"),
-    path('signup/',views.signup,name="patient_signup"),
+    path('signup/',views.signup,name="signup"),
+    path('login/',views.signup,name="patient_login"),
 
     path('aboutus/',views.services,name="about_us"),
 
