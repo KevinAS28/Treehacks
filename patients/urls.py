@@ -12,7 +12,7 @@ urlpatterns = [
 
     path('aboutus/',views.services,name="about_us"),
 
-    #path('emergencycontacts/', views.setEmergencyContacts, name="emergency_contacts")
+    path('alertContacts/', views.alertContacts, name="alert_contacts"),
 
     path('health/info', views.healthRecord, name="patient_health"),
     path('health/info/<int:page_section>', views.healthRecord, name="patient_health"),

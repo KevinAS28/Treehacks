@@ -74,10 +74,14 @@ def auth_face(request):
 # ----------------------------------------------------------------------------------------------------#
 # Patients Account access
 
+# Todo
+@login_required
+def alertContacts(request):
+  return render(request, 'patient/alert_contacts.html')
+
 def startup(request):
     # startup page of the application
     return render(request,'account/signup.html')
-
 
 @csrf_exempt
 def signup(request):
@@ -191,11 +195,7 @@ def getPatient(request):
   user = request.user
   patient = PatientProfile.objects.get(user=user)
   return patient
-'''
-@login_required
-def setEmergencyContacts(request):
-    return render(request, 'patient/')
-'''
+
 @login_required
 def healthRecord(request, page_section=0):
   patient = getPatient(request)
